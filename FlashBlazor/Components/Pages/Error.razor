@@ -1,0 +1,29 @@
+﻿@using System.Diagnostics
+
+@page "/Error/{StatusCode}"
+
+<PageTitle>@StatusCode</PageTitle>
+
+<h1 class="text-danger">@StatusCode</h1>
+
+@if (ShowRequestId)
+{
+    <p>
+        <strong>请求 ID:</strong> <code>@RequestId</code>
+    </p>
+}
+
+@code{
+
+    [Parameter]
+    public string? StatusCode { get; set; }
+
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+    override protected void OnInitialized() =>
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}

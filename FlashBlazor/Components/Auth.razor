@@ -1,0 +1,29 @@
+﻿@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorage
+@inject IJwtService jwtService
+
+@code {
+
+    [Parameter]
+    public UserRole? Role { get; set; }
+
+    override protected async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var token = await LocalStorage.GetItemAsync<string>("token");
+        if (string.IsNullOrEmpty(token))
+        {
+            NavigationManager.NavigateTo("/login");
+            return;
+        }
+
+        var isValid = await jwtService.ValidateTokenAsync(token, Role.ToString() ?? "");
+
+        if (!isValid)
+        {
+            NavigationManager.NavigateTo("/login");
+            return;
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

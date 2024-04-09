@@ -1,0 +1,35 @@
+﻿@page "/login"
+@inject IJwtService JwtService
+@inject ILocalStorageService LocalStorage
+
+<PageTitle>登录</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">登录</MudText>
+
+@_token
+
+<MudTextField Label="用户名" @bind-Value="@_username" Variant="Variant.Filled" FullWidth="true" Class="mb-4"/>
+<MudTextField Label="密码" @bind-Value="@_password" Variant="Variant.Filled" FullWidth="true" Class="mb-4"/>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mb-4" @onclick="OnLogin">登录</MudButton>
+
+@code {
+    private string _username = "";
+    private string _password = "";
+
+    private string _token = "";
+
+    private async Task OnLogin()
+    {
+        _token = await JwtService.CreateTokenAsync(new UserInfoTokenData()
+        {
+            Username = _username,
+            Role = UserRole.Admin.ToString()
+        });
+        
+        // 将 token 存储到本地
+        await LocalStorage.SetItemAsync("token", _token);
+
+        StateHasChanged();
+    }
+
+}
