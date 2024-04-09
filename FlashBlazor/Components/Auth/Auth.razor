@@ -8,14 +8,19 @@
     [Parameter]
     public UserRole? Role { get; set; }
 
-    override protected async Task OnAfterRenderAsync(bool firstRender)
+    override protected async Task OnInitializedAsync()
     {
+        string? token;
+
         if (String.IsNullOrEmpty(UserSessionService.Token))
         {
-            
+            token = await LocalStorage.GetItemAsync<string>("token");
         }
-        
-        var token = await LocalStorage.GetItemAsync<string>("token");
+        else
+        {
+            token = UserSessionService.Token;
+        }
+
         if (string.IsNullOrEmpty(token))
         {
             NavigationManager.NavigateTo("/login");
@@ -27,9 +32,11 @@
         if (!isValid)
         {
             NavigationManager.NavigateTo("/login");
+            UserSessionService.Token = null;
+            await LocalStorage.RemoveItemAsync("token");
             return;
         }
 
-        await base.OnAfterRenderAsync(firstRender);
+        // await base.OnAfterRenderAsync(firstRender);
     }
 }

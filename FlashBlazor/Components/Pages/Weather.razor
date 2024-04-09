@@ -1,6 +1,6 @@
 ﻿@page "/weather"
 
-<Auth Role="@UserRole.Admin"/>
+<Auth Role="UserRole.Admin"/>
 
 <PageTitle>Weather</PageTitle>
 
@@ -37,6 +37,8 @@ else
 
     override protected async Task OnInitializedAsync()
     {
+        Console.WriteLine("Weather page initialized");
+        
         // Simulate asynchronous loading to demonstrate streaming rendering
         await Task.Delay(500);
 
