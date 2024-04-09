@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using FlashBlazor;
 using FlashBlazor.Components;
+using FlashBlazor.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.ResponseCompression;

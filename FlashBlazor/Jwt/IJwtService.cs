@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
+using FlashBlazor.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FlashBlazor;

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FlashBlazor.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlashBlazor;
 

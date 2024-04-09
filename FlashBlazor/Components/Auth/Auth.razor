@@ -1,6 +1,7 @@
 ﻿@inject NavigationManager NavigationManager
 @inject ILocalStorageService LocalStorage
-@inject IJwtService jwtService
+@inject IJwtService JwtService
+@inject IUserSessionService UserSessionService
 
 @code {
 
@@ -9,6 +10,11 @@
 
     override protected async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (String.IsNullOrEmpty(UserSessionService.Token))
+        {
+            
+        }
+        
         var token = await LocalStorage.GetItemAsync<string>("token");
         if (string.IsNullOrEmpty(token))
         {
@@ -16,7 +22,7 @@
             return;
         }
 
-        var isValid = await jwtService.ValidateTokenAsync(token, Role.ToString() ?? "");
+        var isValid = await JwtService.ValidateTokenAsync(token, Role.ToString() ?? "");
 
         if (!isValid)
         {

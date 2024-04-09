@@ -1,6 +1,6 @@
 ﻿// ReSharper disable ClassNeverInstantiated.Global
 
-namespace FlashBlazor;
+namespace FlashBlazor.Infrastructure;
 
 /// <summary>
 /// 标记特性

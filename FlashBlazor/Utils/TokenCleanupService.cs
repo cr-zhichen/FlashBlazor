@@ -1,4 +1,6 @@
-﻿namespace FlashBlazor;
+﻿using FlashBlazor.Infrastructure;
+
+namespace FlashBlazor;
 
 /// <summary>
 /// Token清理服务

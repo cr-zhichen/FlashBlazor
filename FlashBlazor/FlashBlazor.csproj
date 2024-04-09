@@ -25,7 +25,6 @@
 
   
   <ItemGroup>
-    <Folder Include="Components\Auth\" />
     <Folder Include="Jwt\" />
   </ItemGroup>
 
@@ -36,6 +35,7 @@
     <_ContentIncludedByDefault Remove="Build\Win-64\appsettings.json" />
     <_ContentIncludedByDefault Remove="Build\Win-64\CertForge.NET.deps.json" />
     <_ContentIncludedByDefault Remove="Build\Win-64\CertForge.NET.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Components\Pages\Auth\Auth.razor" />
   </ItemGroup>
   
 </Project>

@@ -1,4 +1,6 @@
-﻿namespace FlashBlazor;
+﻿using FlashBlazor.Infrastructure;
+
+namespace FlashBlazor;
 
 /// <summary>
 /// 显示启动图
