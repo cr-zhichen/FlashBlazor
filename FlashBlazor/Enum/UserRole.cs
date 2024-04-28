@@ -14,9 +14,4 @@ public enum UserRole
     /// 用户
     /// </summary>
     User,
-
-    /// <summary>
-    /// 游客
-    /// </summary>
-    Guest
 }

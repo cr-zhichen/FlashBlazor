@@ -1,24 +1,32 @@
 ﻿@page "/weather"
-
-<Auth Role="UserRole.Admin"/>
+@using FlashBlazor.Jwt
+@inject AuthUtils AuthUtils
 
 <PageTitle>Weather</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
 <MudText Class="mb-8">This component demonstrates fetching data from the server.</MudText>
 
-@if (forecasts == null)
+@if (_forecasts == null)
 {
-    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
 }
 else
 {
-    <MudTable Items="forecasts" Hover="true" SortLabel="Sort By" Elevation="0">
+    <MudTable Items="_forecasts" Hover="true" SortLabel="Sort By" Elevation="0">
         <HeaderContent>
-            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<WeatherForecast, object>(x=>x.Date)">Date</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureC)">Temp. (C)</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureF)">Temp. (F)</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.Summary!)">Summary</MudTableSortLabel></MudTh>
+            <MudTh>
+                <MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<WeatherForecast, object>(x => x.Date)">Date</MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.TemperatureC)">Temp. (C)</MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.TemperatureF)">Temp. (F)</MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x => x.Summary!)">Summary</MudTableSortLabel>
+            </MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Date">@context.Date</MudTd>
@@ -27,29 +35,36 @@ else
             <MudTd DataLabel="Summary">@context.Summary</MudTd>
         </RowTemplate>
         <PagerContent>
-            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+            <MudTablePager PageSizeOptions="new[] { 50, 100 }"/>
         </PagerContent>
     </MudTable>
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
 
-    override protected async Task OnInitializedAsync()
+    private WeatherForecast[]? _forecasts;
+
+    override protected async Task OnAfterRenderAsync(bool firstRender)
     {
-        Console.WriteLine("Weather page initialized");
-        
+        if (!firstRender) return;
+        if (!await AuthUtils.Auth(UserRole.Admin, UserRole.User)) return;
+
+        Console.WriteLine("天气页面已初始化");
+
         // Simulate asynchronous loading to demonstrate streaming rendering
         await Task.Delay(500);
 
         var startDate = DateOnly.FromDateTime(DateTime.Now);
         var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        _forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = startDate.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = summaries[Random.Shared.Next(summaries.Length)]
         }).ToArray();
+
+        Console.WriteLine("天气数据已加载");
+        StateHasChanged();
     }
 
     private class WeatherForecast
@@ -59,4 +74,5 @@ else
         public string? Summary { get; set; }
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
+
 }
